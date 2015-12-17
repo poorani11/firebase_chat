@@ -41,15 +41,33 @@
         </nav>
     </header>
         
-    <div ng-controller="ChatCtrl">
-        <ul class="chatbox">
-            <li ng-repeat="message in messages">{{ message.from }}: {{ message.content }}</li>
-        </ul>
-        <form ng-submit="addMessage()">
-            <input type="text" ng-model="message">
-            <input type="submit" value="Add Message">
-        </form>
-    </div>
+<div ng-controller="ChatCtrl">
+  <p>
+    Sort by:
+    <select ng-model="orderBy">
+      <option>from</option>
+      <option>content</option>
+      <option>timestamp</option>
+    </select>
+  </p>
+
+  <p>Search: <input ng-model="searchText"></p>
+
+  <ul class="chatbox">
+    <!-- arrays are fully sortable and filterable -->
+    <li ng-repeat="message in messages | orderBy:orderBy | filter:searchText">
+      {{ message.from }}: {{ message.content }}
+
+      <!-- delete a message using $remove -->
+      <a href="" ng-click="messages.$remove(message)">X</a>
+    </li>
+  </ul>
+
+  <form ng-submit="addMessage()">
+    <input type="text" ng-model="message">
+    <input type="submit">
+  </form>
+</div>
 
 </body>
 </html>
